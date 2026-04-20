@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BlackIA — Demo Gratuita 7 Días</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #000000;
+  --fg: #ffffff;
+  --blue: #0077ff;
+  --blue-dim: rgba(0,119,255,0.12);
+  --blue-glow: rgba(0,119,255,0.3);
+  --border: #1e1e1e;
+  --border-bright: #2a2a2a;
+  --muted: rgba(255,255,255,0.45);
+  --sub: rgba(255,255,255,0.28);
+  --mono: 'Geist Mono', monospace;
+  --display: 'Playfair Display', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ─── PARTICLES ─── */
+#particles-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ─── LAYOUT ─── */
+.page { position: relative; z-index: 1; }
+
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* ─── HEADER ─── */
+header {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 1.4rem 0;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, transparent 100%);
+  transition: background 0.3s;
+}
+header.scrolled { background: rgba(0,0,0,0.9); }
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img { display: block; height: 34px; width: auto; }
+
+.nav-cta {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  border: 1px solid var(--blue);
+  padding: 0.42rem 1rem;
+  border-radius: 2px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.nav-cta:hover {
+  background: var(--blue-dim);
+  box-shadow: 0 0 14px var(--blue-glow);
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 9rem 1.5rem 5rem;
+}
+
+/* ── CUPOS BADGE ── */
+.cupos-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--border-bright);
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(4px);
+  padding: 0.38rem 1rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px);
+  animation: fadeDown 0.7s ease both;
+}
+.cupos-badge .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 6px 1px var(--blue-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* ── HEADLINE ── */
+.hero h1 {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.1;
+  max-width: 820px;
+  letter-spacing: -0.01em;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--blue);
+}
+
+/* ── SUB ── */
+.hero .sub {
+  max-width: 580px;
+  margin: 1.8rem auto 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.75;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+/* ── PAIN POINTS ── */
+.pain-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 2rem;
+  margin: 2.2rem auto 0;
+  max-width: 580px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.pain-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.pain-item .x { color: #ff3b3b; font-size: 0.72rem; }
+.pain-item.good .x { color: var(--blue); }
+
+/* ── CTA BUTTON ── */
+.hero .cta-wrap {
+  margin-top: 2.8rem;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--blue);
+  color: var(--blue);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.9rem 2.2rem;
+  cursor: pointer;
+  transition: background 0.25s, box-shadow 0.25s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--blue-dim), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cta-btn:hover::before { opacity: 1; }
+.cta-btn:hover {
+  box-shadow: 0 0 28px var(--blue-glow), inset 0 0 20px rgba(0,119,255,0.04);
+  transform: translateY(-1px);
+}
+.cta-btn:active { transform: translateY(0); }
+.cta-btn span { position: relative; z-index: 1; }
+
+/* ── URGENCIA LINE ── */
+.urgencia {
+  margin-top: 1rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  color: var(--sub);
+  animation: fadeUp 0.8s 0.5s ease both;
+}
+.urgencia strong { color: var(--blue); }
+
+/* ── SCROLL HINT ── */
+.scroll-hint {
+  margin-top: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--sub);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  animation: bounce-down 2.2s ease-in-out infinite, fadeUp 0.8s 0.6s ease both;
+}
+.scroll-hint .arrow { font-size: 0.85rem; color: var(--blue); }
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* ─── DIVIDER ─── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-bright) 30%, var(--border-bright) 70%, transparent);
+}
+
+/* ─── VSL SECTION ─── */
+.vsl-section {
+  padding: 5rem 0 4rem;
+  background: rgba(8,8,8,0.7);
+}
+
+.vsl-inner {
+  max-width: 820px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.section-label::before, .section-label::after {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--blue);
+  opacity: 0.6;
+}
+
+.vsl-pretitle {
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+  font-weight: 400;
+  margin-bottom: 1.6rem;
+  color: var(--muted);
+}
+.vsl-pretitle em { color: var(--fg); font-style: italic; font-weight: 300; }
+
+/* ── VIDEO BOX ── */
+.video-wrap {
+  width: 100%;
+  aspect-ratio: 16/9;
+  position: relative;
+  background: #0a0a0a;
+  border: 1px solid var(--border-bright);
+  border-radius: 3px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.video-wrap:hover {
+  border-color: rgba(0,119,255,0.3);
+  box-shadow: 0 0 40px rgba(0,119,255,0.08);
+}
+/* grid overlay */
+.video-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,119,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,119,255,0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+/* glow center */
+.video-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,119,255,0.05) 0%, transparent 65%);
+}
+.play-icon {
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  border: 1.5px solid var(--blue);
+  background: rgba(0,119,255,0.08);
+  box-shadow: 0 0 30px var(--blue-glow), inset 0 0 20px rgba(0,119,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.video-wrap:hover .play-icon {
+  transform: scale(1.08);
+  box-shadow: 0 0 50px var(--blue-glow);
+}
+.play-icon svg { width: 26px; height: 26px; fill: var(--blue); margin-left: 4px; }
+.play-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sub);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── PROMESA BAJO VIDEO ── */
+.video-footer {
+  margin-top: 1.4rem;
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.video-stat {
+  text-align: center;
+}
+.video-stat .num {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--blue);
+  line-height: 1;
+}
+.video-stat .label {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sub);
+  margin-top: 0.2rem;
+}
+
+/* ─── BOOKING SECTION ─── */
+.booking-section {
+  padding: 5rem 0 6rem;
+}
+
+.booking-inner {
+  max-width: 760px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.booking-inner h2 {
+  font-family: var(--display);
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 0.7rem;
+}
+.booking-inner h2 em { font-style: italic; font-weight: 300; color: var(--blue); }
+
+.booking-inner .sub-book {
+  color: var(--muted);
+  font-size: 0.81rem;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+/* ── WHAT YOU GET ── */
+.get-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem 2rem;
+  margin-bottom: 2.5rem;
+  list-style: none;
+}
+.get-list li {
+  font-size: 0.74rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.get-list .ck { color: var(--blue); font-size: 0.7rem; }
+
+/* ── CALENDAR PLACEHOLDER ── */
+.calendar-placeholder {
+  width: 100%;
+  min-height: 580px;
+  background: #070707;
+  border: 1px solid var(--border-bright);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.calendar-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,119,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,119,255,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.calendar-icon {
+  width: 56px; height: 56px;
+  border: 1px solid var(--border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.calendar-icon svg { width: 28px; height: 28px; stroke: var(--blue); fill: none; stroke-width: 1.5; }
+.calendar-placeholder p {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sub);
+  position: relative;
+  z-index: 1;
+}
+/* cuando tengas GHL, reemplaza .calendar-placeholder con: */
+/* .ghl-calendar { min-height: 580px; width: 100%; } */
+
+/* ── TRUST BAR ── */
+.trust-bar {
+  margin-top: 2rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--sub);
+}
+.trust-bar strong { color: var(--blue); }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  text-align: center;
+}
+.footer-logo { display: flex; justify-content: center; margin-bottom: 0.8rem; }
+.footer-logo img { height: 28px; width: auto; opacity: 0.7; }
+footer .copy {
+  font-size: 0.6rem;
+  color: var(--sub);
+  letter-spacing: 0.08em;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 480px) {
+  .video-footer { gap: 1.5rem; }
+  .video-stat .num { font-size: 1.2rem; }
+  .hero h1 { font-size: clamp(1.9rem, 7vw, 2.4rem); }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<!-- ── HEADER ── -->
+<header id="main-header">
+  <div class="container">
+    <div class="header-inner">
+      <div class="logo">
+        <img src="data:image/png;base64,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" alt="Black IA Club" />
+      </div>
+      <a href="#agenda" class="nav-cta">Activar demo</a>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+
+    <div class="cupos-badge">
+      <span class="dot"></span>
+      Solo 5 cupos disponibles · Demo gratuita 7 días
+    </div>
+
+    <h1>
+      Tu negocio pierde leads cada día<br>
+      por <em>respuestas lentas</em> y setters que no escalan
+    </h1>
+
+    <p class="sub">
+      Te instalo un Agente de IA que agenda llamadas <strong style="color:#fff">24/7</strong>, responde al instante y llena tu calendario — sin que vos gestionés nada ni dependas de tu equipo de setting.
+    </p>
+
+    <div class="pain-row">
+      <div class="pain-item"><span class="x">✕</span> Leads que no responden al día siguiente</div>
+      <div class="pain-item"><span class="x">✕</span> Setters que fallan o se van</div>
+      <div class="pain-item"><span class="x">✕</span> Dailys que no mueven el calendario</div>
+      <div class="pain-item good"><span class="x">✦</span> Respuesta en segundos, 24/7</div>
+      <div class="pain-item good"><span class="x">✦</span> Más llamadas sin más equipo</div>
+      <div class="pain-item good"><span class="x">✦</span> Sin gestión, sin supervisión</div>
+    </div>
+
+    <div class="cta-wrap">
+      <a href="#agenda" class="cta-btn"><span>Quiero mi demo gratis de 7 días →</span></a>
+    </div>
+
+    <p class="urgencia">
+      <strong>Solo 5 dueños de negocio</strong> · Instalación en 24–48 hs · Sin tarjeta de crédito
+    </p>
+
+    <div class="scroll-hint">
+      <span class="arrow">↓</span>
+      <span>Mirá cómo funciona</span>
+    </div>
+
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══ VSL ══ -->
+  <section class="vsl-section" id="video">
+    <div class="container">
+      <div class="vsl-inner reveal">
+
+        <div class="section-label">Cómo funciona</div>
+
+        <div class="video-wrap" style="padding:0;background:#000;border-radius:3px;overflow:hidden;">
+          <iframe
+            width="100%"
+            height="100%"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+            src="https://www.youtube.com/embed/nZCcKEBaZqI?rel=0&modestbranding=1&color=white"
+            title="Demo Black IA — Setter de IA 24/7"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══ BOOKING ══ -->
+  <section class="booking-section" id="agenda">
+    <div class="container">
+      <div class="booking-inner reveal">
+
+        <div class="section-label">Activá tu demo</div>
+
+        <h2>Agendá tu sesión de<br><em>instalación gratuita</em></h2>
+
+        <p class="sub-book">
+          En 45 minutos te mostramos el sistema en vivo, lo configuramos para tu negocio
+          y lo dejamos funcionando — sin compromiso.
+        </p>
+
+        <ul class="get-list">
+          <li><span class="ck">✦</span> Demo en vivo de tu Agente IA</li>
+          <li><span class="ck">✦</span> Instalación personalizada en 24–48 hs</li>
+          <li><span class="ck">✦</span> 7 días gratis, sin tarjeta</li>
+          <li><span class="ck">✦</span> Soporte directo con Ricardo</li>
+        </ul>
+
+        <!-- Calendly -->
+        <div class="calendly-inline-widget" data-url="https://calendly.com/blackia/calldeconsultoria" style="min-width:320px;height:700px;"></div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
+        <p class="trust-bar">
+          <strong>Solo 5 cupos disponibles</strong> · Los lugares se asignan por orden de agenda
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page -->
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAksAAADICAYAAAD4BqVdAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAEAAElEQVR4nOz9ebwdR3XvDX+retjTmY+O5tmyZVu2Bk+y5XnAAwabGHAw5IaQXN4bSEJIyH0DIRByDQnJfZM8b3hIAuE+IUBCmBMgzJjYeJ5nS7YkW/OsM+2pp6rnj+7qXXufI0uWZDztnz5b55y9e3dXV3dX/Wqt31pLAJouuuiiiy666KKLLqaF+1I34HhCZD9lx/sKwwglCNn+ySGponr+A2lzJNmxrWpry/NBt+3r+dtvPtFtn1pfNluJ5zunLrrooosuuujiheIVTZY6CYkEHOt9QyUSIAaQDgg3/YkGnaQvaBEMrVt/CwUCpMjeVq2dawdQDuCC0KAzSqZBoHIapZlKfsjalIhsf1lDpU5/dTq2TQ8t0TgkuNYWGVETSda47Ge2v8MRti6n6qKLLrrooovD4xVNlgwJUflPiUIiMYSlZZMRgNaJRWwUqCT9XbfojBACgYNwBEkCaNXai80+FKR0IwYtEAKEYSg6PYyyNwWEsI4hAGXRFZn9mRmGpic6GocYhcosTIbYGcIUH5YkafvDLlvqoosuuuiii8PC9uO8omBbYBJA44Hw03cFGQlKCYQgyghUC51WKGiRGg3ozJKj0KiUBnUgwUG1W7EyC1SLXImMnLjpB8JytGmFQKXcDYkW2RkJu6UadJyeoY5zm5L16bQXzz4PlR0v305YLsNX5JXvoosuuuiii18sXtGWJYNcx2Mzn5xR6PxPm2gYSiJoVxzptt+1RYekZRoClM7sWLnzKzcU5fooSK1WApBZV5t9aIlIYiSaBDK/XtYqYdnMRHYEAUnq5cPRrbY7rS3zY3eqqNp0TpZ7sUuWuuiiiy666OLweEVPmSntsEXPInszpS9CtyxI0BJ654JvyywkBAjhoLUGLdOfnV0jSDfUmYhbiHQ7ZY6btUNmxCrXP2lL9JR9V4ODzJyGyhKhg84apjKS1Dq21WYFrmqxXdPaKeeIa30pO3Cq4HoFX/kuuuiiiy666OLweEVPmSntsEXPInszpS9CtyxI0BJ654JvyywkBAjhoLUGLdOfnV0jSDfUmYhbiHQ7ZY6btUNmxCrXP2lL9JR9V4ODzJyGyhKhg84apjKS1Dq21WYFrmqxXdPaKeeIa30pO3Cq4HoFX/kuuuiiiy666OLweEVPmSntsEXPInszpS9CtyxI0BJ654JvyywkBAjhoLUGLdOfnV0jSDfUmYhbiHQ7ZY6btUNmxCrXP2lL9JR9V4ODzJyGyhKhg84apjKS1Dq21WYFrmqxXdPaKeeIa30pO3Cq4HoFX/k" alt="Black IA Club" />
+    </div>
+    <p class="copy">© 2025 BlackIA. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+// ── PARTICLES ──
+(function(){
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize(){
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor(){ this.reset(); }
+    reset(){
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.size = Math.random() * 1.5 + 0.3;
+      this.baseOpacity = Math.random() * 0.3 + 0.06;
+      this.opacity = this.baseOpacity;
+      this.vx = (Math.random() - 0.5) * 0.25;
+      this.vy = (Math.random() - 0.5) * 0.25;
+      this.sparkle = Math.random() * Math.PI * 2;
+      this.sparkleSpeed = Math.random() * 1.2 + 0.4;
+    }
+    update(){
+      this.x += this.vx; this.y += this.vy;
+      this.sparkle += this.sparkleSpeed * 0.016;
+      if(this.x < -10) this.x = W+10;
+      if(this.x > W+10) this.x = -10;
+      if(this.y < -10) this.y = H+10;
+      if(this.y > H+10) this.y = -10;
+      this.opacity = this.baseOpacity + Math.sin(this.sparkle) * 0.1;
+    }
+    draw(){
+      const isBlue = this.baseOpacity > 0.25;
+      ctx.fillStyle = isBlue
+        ? `rgba(0,119,255,${this.opacity})`
+        : `rgba(255,255,255,${this.opacity})`;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+      ctx.fill();
+    }
+  }
+
+  const COUNT = 180;
+  for(let i=0;i<COUNT;i++) particles.push(new Particle());
+
+  function connectParticles(){
+    const maxDist = 110;
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<maxDist){
+          ctx.strokeStyle=`rgba(0,119,255,${(1-d/maxDist)*0.05})`;
+          ctx.lineWidth=0.5;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{ p.update(); p.draw(); });
+    connectParticles();
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ── HEADER SCROLL ──
+(function(){
+  const hdr = document.getElementById('main-header');
+  window.addEventListener('scroll', () => {
+    hdr.classList.toggle('scrolled', window.scrollY > 50);
+  });
+})();
+
+// ── SCROLL REVEAL ──
+(function(){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+</script>
+</body>
+</html>
