@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="facebook-domain-verification" content="z1c4sjnd5rr2gpq3hm0k9676ft2xxj" />
+<title>BlackIA — Activá tu Demo Gratuita de 7 Días</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #000000;
+  --fg: #ffffff;
+  --blue: #0077ff;
+  --blue-dim: rgba(0,119,255,0.12);
+  --blue-glow: rgba(0,119,255,0.3);
+  --wa-green: #22c15e;
+  --wa-green-dim: rgba(34,193,94,0.12);
+  --border: #1e1e1e;
+  --border-bright: #2a2a2a;
+  --muted: rgba(255,255,255,0.45);
+  --sub: rgba(255,255,255,0.28);
+  --mono: 'Geist Mono', monospace;
+  --display: 'Playfair Display', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+
+#particles-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.page { position: relative; z-index: 1; }
+.container { width: 100%; max-width: 760px; margin-inline: auto; padding-inline: 1.5rem; }
+
+/* ─── TOP TRUST BAR ─── */
+.trust-pill-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding: 1.1rem 1rem;
+  background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 70%, transparent 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--border-bright);
+  background: rgba(255,255,255,0.03);
+  padding: 0.42rem 1.1rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px);
+}
+.trust-pill .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 6px 1px var(--blue-glow);
+  animation: pulse 2s ease-in-out infinite;
+  flex: none;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* ─── HERO ─── */
+.hero {
+  text-align: center;
+  padding: 3.2rem 1.5rem 2.6rem;
+}
+.hero h1 {
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 4.6vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.14;
+  max-width: 760px;
+  margin-inline: auto;
+  letter-spacing: -0.01em;
+  animation: fadeUp 0.8s 0.05s ease both;
+}
+.hero h1 em { font-style: italic; font-weight: 300; color: var(--blue); }
+.hero .sub {
+  max-width: 560px;
+  margin: 1.4rem auto 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.75;
+  animation: fadeUp 0.8s 0.15s ease both;
+}
+.hero .sub strong { color: var(--fg); font-weight: 500; }
+
+/* ─── QUIZ CARD ─── */
+.quiz-zone { padding: 0 0 3rem; }
+
+.quiz-card {
+  position: relative;
+  border: 1px solid var(--border-bright);
+  background: rgba(8,8,8,0.85);
+  border-radius: 4px;
+  padding: 2.6rem 1.8rem 2.2rem;
+  overflow: hidden;
+  animation: fadeUp 0.8s 0.25s ease both;
+}
+.quiz-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,119,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,119,255,0.03) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+.quiz-card > * { position: relative; z-index: 1; }
+
+/* progress */
+.progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+.back-btn {
+  background: none;
+  border: 1px solid var(--border-bright);
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  visibility: hidden;
+}
+.back-btn.show { visibility: visible; }
+.back-btn:hover { color: var(--fg); border-color: var(--blue); }
+
+.progress-track {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background: linear-gradient(90deg, var(--blue), rgba(0,119,255,0.5));
+  box-shadow: 0 0 10px var(--blue-glow);
+  transition: width 0.45s cubic-bezier(.4,0,.2,1);
+}
+.progress-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  color: var(--sub);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* steps */
+.step { display: none; }
+.step.active { display: block; animation: stepIn 0.45s cubic-bezier(.4,0,.2,1) both; }
+@keyframes stepIn {
+  from { opacity: 0; transform: translateX(26px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.step.back-anim { animation: stepInBack 0.45s cubic-bezier(.4,0,.2,1) both; }
+@keyframes stepInBack {
+  from { opacity: 0; transform: translateX(-26px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.step h2 {
+  font-family: var(--display);
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.25;
+  margin-bottom: 1.8rem;
+}
+.step h2 em { font-style: italic; font-weight: 300; color: var(--blue); }
+
+/* options */
+.options { display: flex; flex-direction: column; gap: 0.75rem; }
+.opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  text-align: left;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-bright);
+  color: var(--fg);
+  font-size: 0.82rem;
+  padding: 1.05rem 1.2rem;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.12s;
+}
+.opt .arrow { color: var(--blue); opacity: 0.55; transition: transform 0.2s, opacity 0.2s; flex: none; }
+.opt:hover {
+  border-color: var(--blue);
+  background: var(--blue-dim);
+  box-shadow: 0 0 18px rgba(0,119,255,0.12);
+}
+.opt:hover .arrow { transform: translateX(4px); opacity: 1; }
+.opt:active { transform: scale(0.99); }
+
+/* form */
+.field { margin-bottom: 1.2rem; text-align: left; }
+.field label {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+.field input {
+  width: 100%;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-bright);
+  border-radius: 3px;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  padding: 0.9rem 1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input::placeholder { color: var(--sub); }
+.field input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 14px rgba(0,119,255,0.14);
+}
+.field.error input { border-color: #ff3b3b; }
+.field .err-msg {
+  display: none;
+  font-size: 0.62rem;
+  color: #ff3b3b;
+  margin-top: 0.35rem;
+  letter-spacing: 0.06em;
+}
+.field.error .err-msg { display: block; }
+
+.submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--blue);
+  color: var(--blue);
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 1rem 1.5rem;
+  margin-top: 0.4rem;
+  cursor: pointer;
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s, transform 0.15s;
+}
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--blue-dim), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.submit-btn:hover::before { opacity: 1; }
+.submit-btn:hover { box-shadow: 0 0 26px var(--blue-glow); transform: translateY(-1px); }
+.submit-btn span { position: relative; z-index: 1; }
+
+/* ── CONFIRMACIÓN / WHATSAPP ── */
+.confirm { text-align: center; }
+.confirm .pre {
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.7rem;
+}
+.confirm h2 {
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 5vw, 2.9rem);
+  margin-bottom: 1.1rem;
+}
+.confirm .explain {
+  color: var(--muted);
+  font-size: 0.8rem;
+  max-width: 480px;
+  margin: 0 auto 1.8rem;
+  line-height: 1.75;
+}
+.confirm .explain strong { color: var(--fg); }
+
+.wa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  width: 100%;
+  max-width: 480px;
+  background: var(--wa-green);
+  border: 1px solid var(--wa-green);
+  color: #04140a;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1.1rem 1.6rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: box-shadow 0.25s, transform 0.15s, filter 0.2s;
+}
+.wa-btn:hover {
+  box-shadow: 0 0 34px rgba(34,193,94,0.35);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+.wa-btn svg { width: 20px; height: 20px; fill: #04140a; flex: none; }
+
+.countdown {
+  margin-top: 0.9rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  color: var(--sub);
+}
+.countdown strong { color: var(--wa-green); }
+
+.msg-preview {
+  margin: 2rem auto 0;
+  max-width: 520px;
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  padding: 1.4rem 1.3rem 1.2rem;
+  background: rgba(255,255,255,0.015);
+  text-align: left;
+}
+.msg-preview .mp-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--sub);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.msg-bubble {
+  background: rgba(34,193,94,0.08);
+  border: 1px solid rgba(34,193,94,0.25);
+  border-radius: 4px;
+  padding: 1rem 1.1rem;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.7;
+}
+.msg-preview .mp-hint {
+  text-align: center;
+  font-size: 0.62rem;
+  color: var(--sub);
+  margin-top: 0.9rem;
+  letter-spacing: 0.06em;
+}
+
+/* ── BENEFICIOS BAJO CARD ── */
+.benefits {
+  list-style: none;
+  margin: 2.4rem auto 0;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  animation: fadeUp 0.8s 0.35s ease both;
+}
+.benefits li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  color: var(--fg);
+  text-align: center;
+}
+.benefits li strong { color: var(--blue); font-weight: 500; }
+.benefits .ck { color: var(--blue); flex: none; font-size: 0.74rem; }
+
+.legal {
+  max-width: 620px;
+  margin: 2.4rem auto 0;
+  text-align: center;
+  font-size: 0.62rem;
+  color: var(--sub);
+  line-height: 1.8;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  text-align: center;
+}
+.footer-brand {
+  font-size: 0.72rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.7rem;
+}
+.footer-brand b { color: var(--blue); font-weight: 500; }
+footer .copy { font-size: 0.6rem; color: var(--sub); letter-spacing: 0.08em; }
+footer .disclaimer {
+  max-width: 640px;
+  margin: 0 auto 1rem;
+  font-size: 0.58rem;
+  color: var(--sub);
+  line-height: 1.7;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 480px) {
+  .quiz-card { padding: 2rem 1.1rem 1.8rem; }
+  .progress-label { display: none; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<div class="page">
+
+  <!-- ── TRUST BAR ── -->
+  <div class="trust-pill-wrap">
+    <div class="trust-pill">
+      <span class="dot"></span>
+      Solo 5 cupos disponibles · Demo gratuita 7 días
+    </div>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <h1>
+      Te instalamos <em>100% Gratis</em> nuestro Setter de IA<br>
+      de Instagram que te agenda llamadas en automático<br>
+      en menos de <em>24 hs</em>
+    </h1>
+    <p class="sub">
+      Responde el formulario de abajo y activa tu <strong>demo gratuita de 7 días</strong>,
+      instalada en tu negocio en 24–48 hs, sin que gestiones nada.
+    </p>
+  </section>
+
+  <!-- ── QUIZ ── -->
+  <section class="quiz-zone">
+    <div class="container">
+
+      <div class="quiz-card" id="quiz-card">
+
+        <div class="progress-row">
+          <button class="back-btn" id="back-btn" type="button">← Atrás</button>
+          <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+          <span class="progress-label" id="progress-label">Paso 1 de 4</span>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="step active" data-step="1">
+          <h2>¿Qué tipo de negocio tienes?</h2>
+          <div class="options">
+            <button class="opt" data-key="negocio" data-value="coaching / consultoría / mentorías"><span>Coaching / Consultoría / Mentorías</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="negocio" data-value="marca personal / infoproductos"><span>Marca personal / Infoproductos</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="negocio" data-value="e-commerce"><span>E-commerce</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="negocio" data-value="otro tipo de negocio"><span>Otro (servicios, negocio físico, SaaS)</span><span class="arrow">→</span></button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step" data-step="2">
+          <h2>¿Cuánto estás generando <em>mensualmente</em>?</h2>
+          <div class="options">
+            <button class="opt" data-key="facturacion" data-value="menos de $1k USD al mes"><span>Menos de $1k USD al mes</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="facturacion" data-value="entre $1k y $5k USD al mes"><span>Entre $1k y $5k USD al mes</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="facturacion" data-value="entre $5k y $10k USD al mes"><span>Entre $5k y $10k USD al mes</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="facturacion" data-value="entre $10k y $25k USD al mes"><span>Entre $10k y $25k USD al mes</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="facturacion" data-value="entre $25k y $50k USD al mes"><span>Entre $25k y $50k USD al mes</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="facturacion" data-value="entre $50k y $100k USD al mes"><span>Entre $50k y $100k USD al mes</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="facturacion" data-value="más de $100k USD al mes"><span>Más de $100k USD al mes</span><span class="arrow">→</span></button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step" data-step="3">
+          <h2>¿Cuál es tu principal <em>cuello de botella</em> hoy?</h2>
+          <div class="options">
+            <button class="opt" data-key="cuello" data-value="mi setter responde tarde y pierdo leads"><span>Mi setter responde tarde y pierdo leads</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="cuello" data-value="me agendan leads descalificados"><span>Me agendan leads descalificados</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="cuello" data-value="mi setter y yo no agendamos suficientes calls"><span>Mi setter y yo no agendamos suficientes calls</span><span class="arrow">→</span></button>
+            <button class="opt" data-key="cuello" data-value="todas las anteriores"><span>Todas las anteriores</span><span class="arrow">→</span></button>
+          </div>
+        </div>
+
+        <!-- STEP 4: FORM -->
+        <div class="step" data-step="4">
+          <h2>¿A dónde te enviamos el acceso a tu <em>demo gratuita</em>?</h2>
+          <form id="lead-form" novalidate>
+            <div class="field" id="f-nombre">
+              <label for="in-nombre">Tu nombre</label>
+              <input id="in-nombre" type="text" placeholder="Tu nombre" autocomplete="name" />
+              <span class="err-msg">Ingresa tu nombre</span>
+            </div>
+            <div class="field" id="f-correo">
+              <label for="in-correo">Tu correo</label>
+              <input id="in-correo" type="email" placeholder="tu@email.com" autocomplete="email" />
+              <span class="err-msg">Ingresa un correo válido</span>
+            </div>
+            <div class="field" id="f-wsp">
+              <label for="in-wsp">Tu número de WhatsApp (con código de país)</label>
+              <input id="in-wsp" type="tel" placeholder="+58 412 000 0000" autocomplete="tel" />
+              <span class="err-msg">Ingresa tu número de WhatsApp</span>
+            </div>
+            <div class="field" id="f-ig">
+              <label for="in-ig">Tu @ de Instagram</label>
+              <input id="in-ig" type="text" placeholder="@tu_usuario" />
+              <span class="err-msg">Ingresa tu usuario de Instagram</span>
+            </div>
+            <button class="submit-btn" type="submit"><span>Continuar →</span></button>
+          </form>
+        </div>
+
+        <!-- STEP 5: CONFIRMACIÓN -->
+        <div class="step confirm" data-step="5">
+          <p class="pre">Solo falta un paso</p>
+          <h2>Abre WhatsApp</h2>
+          <p class="explain">
+            Para activar tu demo gratuita de 7 días del Setter IA, abre tu WhatsApp.
+            <strong>El mensaje ya está escrito, solo haz clic en enviar.</strong>
+          </p>
+
+          <button class="wa-btn" id="wa-btn" type="button">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 .8C7.6.8.8 7.6.8 16c0 2.7.7 5.3 2 7.6L.8 31.2l7.8-2c2.2 1.2 4.7 1.9 7.4 1.9 8.4 0 15.2-6.8 15.2-15.1S24.4.8 16 .8zm0 27.7c-2.4 0-4.7-.7-6.7-1.9l-.5-.3-4.6 1.2 1.2-4.5-.3-.5c-1.3-2-2-4.4-2-6.8C3.1 8.9 8.9 3.1 16 3.1S28.9 8.9 28.9 16 23.1 28.5 16 28.5zm7.1-9.4c-.4-.2-2.3-1.1-2.6-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.2 1.5-.2.3-.4.3-.8.1-.4-.2-1.6-.6-3.1-1.9-1.1-1-1.9-2.3-2.1-2.6-.2-.4 0-.6.2-.8.2-.2.4-.4.6-.7.2-.2.3-.4.4-.7.1-.3.1-.5 0-.7-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.7-.9-.7h-.7c-.3 0-.7.1-1.1.5-.4.4-1.4 1.4-1.4 3.3s1.4 3.9 1.6 4.1c.2.3 2.8 4.3 6.8 6 .9.4 1.7.7 2.3.9 1 .3 1.8.3 2.5.2.8-.1 2.3-1 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.3-.3-.7-.5z"/></svg>
+            Activar mi demo por WhatsApp
+          </button>
+
+          <p class="countdown" id="countdown">Abriendo WhatsApp en <strong>8</strong> segundos…</p>
+
+          <div class="msg-preview">
+            <p class="mp-label">Vista previa del mensaje</p>
+            <div class="msg-bubble" id="msg-bubble"></div>
+            <p class="mp-hint">Solamente haz clic en enviar en WhatsApp</p>
+          </div>
+        </div>
+
+      </div><!-- /quiz-card -->
+
+      <ul class="benefits">
+        <li><span class="ck">✦</span><span>Te lo instalamos en <strong>menos de 48 hs</strong></span></li>
+        <li><span class="ck">✦</span><span>Lo <strong>más nuevo y potente</strong> de setter IA en el mercado</span></li>
+        <li><span class="ck">✦</span><span><strong>100% gratuito</strong> — no pagas si no tienes resultados</span></li>
+      </ul>
+
+      <p class="legal">
+        Al dejar tus datos aceptas que BlackIA se ponga en contacto contigo por teléfono, mensaje
+        o email usando la información ingresada. No vendemos tu información personal.
+      </p>
+
+    </div>
+  </section>
+
+</div><!-- /page -->
+
+<footer>
+  <div class="container">
+    <p class="disclaimer">
+      Los resultados individuales pueden variar y dependen del esfuerzo, experiencia y dedicación
+      de cada persona. Este contenido es solo para fines educativos y no garantiza resultados específicos.
+    </p>
+    <p class="footer-brand"><b>Black</b> IA</p>
+    <p class="copy">© 2026 BlackIA. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+/* ═══════════ CONFIGURACIÓN ═══════════
+   Reemplaza este número por tu WhatsApp (solo dígitos, con código de país, sin +) */
+const WHATSAPP_NUMBER = "584228774097"; // +58 422 877 4097
+
+/* Webhook entrante de Go High Level (trigger del workflow) */
+const GHL_WEBHOOK = "https://services.leadconnectorhq.com/hooks/z7utLEuexGOdJOmg1FNj/webhook-trigger/8bb2d587-1d3e-47b1-a1e2-7250412174b3";
+
+/* ═══════════ ESTADO DEL QUIZ ═══════════ */
+const answers = { negocio: "", facturacion: "", cuello: "", nombre: "", correo: "", wsp: "", ig: "" };
+const TOTAL_STEPS = 5;
+let current = 1;
+let countdownTimer = null;
+
+const card = document.getElementById('quiz-card');
+const fill = document.getElementById('progress-fill');
+const label = document.getElementById('progress-label');
+const backBtn = document.getElementById('back-btn');
+
+function showStep(n, backwards = false) {
+  current = n;
+  document.querySelectorAll('.step').forEach(s => {
+    s.classList.remove('active', 'back-anim');
+    if (Number(s.dataset.step) === n) {
+      s.classList.add('active');
+      if (backwards) s.classList.add('back-anim');
+    }
+  });
+  // progreso: contamos 4 pasos visibles (3 preguntas + form); la confirmación llena todo
+  const pct = n >= 5 ? 100 : ((n - 1) / 4) * 100;
+  fill.style.width = pct + '%';
+  label.textContent = n >= 5 ? 'Listo' : `Paso ${n} de 4`;
+  backBtn.classList.toggle('show', n > 1 && n < 5);
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* opciones de las preguntas */
+document.querySelectorAll('.opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    answers[btn.dataset.key] = btn.dataset.value;
+    showStep(current + 1);
+  });
+});
+
+backBtn.addEventListener('click', () => { if (current > 1) showStep(current - 1, true); });
+
+/* ═══════════ FORMULARIO ═══════════ */
+const form = document.getElementById('lead-form');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const nombre = document.getElementById('in-nombre').value.trim();
+  const correo = document.getElementById('in-correo').value.trim();
+  const wsp = document.getElementById('in-wsp').value.trim();
+  const ig = document.getElementById('in-ig').value.trim();
+
+  let ok = true;
+  setErr('f-nombre', !nombre); ok = ok && !!nombre;
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
+  setErr('f-correo', !emailOk); ok = ok && emailOk;
+  setErr('f-wsp', wsp.replace(/\D/g, '').length < 8); ok = ok && wsp.replace(/\D/g, '').length >= 8;
+  setErr('f-ig', !ig); ok = ok && !!ig;
+  if (!ok) return;
+
+  answers.nombre = nombre;
+  answers.correo = correo;
+  answers.wsp = wsp;
+  answers.ig = ig.startsWith('@') ? ig : '@' + ig;
+
+  // Envía el lead a Go High Level antes de redirigir a WhatsApp
+  enviarLeadAGHL();
+
+  buildMessage();
+  showStep(5);
+  startCountdown();
+});
+
+function setErr(id, isError) {
+  document.getElementById(id).classList.toggle('error', isError);
+}
+
+/* ═══════════ ENVÍO A GO HIGH LEVEL ═══════════ */
+function enviarLeadAGHL() {
+  const payload = {
+    name: answers.nombre,
+    email: answers.correo,
+    phone: answers.wsp,
+    instagram: answers.ig,
+    tipo_negocio: answers.negocio,
+    facturacion: answers.facturacion,
+    cuello_botella: answers.cuello,
+    source: "quiz-funnel-blackia"
+  };
+
+  // keepalive: la petición se completa aunque el navegador ya esté saliendo hacia WhatsApp
+  fetch(GHL_WEBHOOK, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    keepalive: true
+  }).catch(() => {
+    // Fallback sin preflight CORS por si el navegador bloquea la petición anterior
+    try {
+      navigator.sendBeacon(GHL_WEBHOOK, new Blob([JSON.stringify(payload)], { type: "text/plain" }));
+    } catch (e) {}
+  });
+}
+
+/* ═══════════ MENSAJE + REDIRECCIÓN ═══════════ */
+function buildWaMessage() {
+  return `Hola, quiero activar mi demo gratuita de 7 días del Agente IA. ` +
+    `Mi negocio es de ${answers.negocio}, estoy generando ${answers.facturacion} ` +
+    `y mi principal cuello de botella es que ${answers.cuello}. ` +
+    `Mi Instagram es ${answers.ig}.`;
+}
+
+function buildMessage() {
+  document.getElementById('msg-bubble').textContent = buildWaMessage();
+}
+
+function waUrl() {
+  return `https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(buildWaMessage())}`;
+}
+
+function goWhatsApp() {
+  window.location.href = waUrl();
+}
+
+document.getElementById('wa-btn').addEventListener('click', () => {
+  clearInterval(countdownTimer);
+  goWhatsApp();
+});
+
+function startCountdown() {
+  let secs = 8;
+  const el = document.getElementById('countdown');
+  const render = () => el.innerHTML = `Abriendo WhatsApp en <strong>${secs}</strong> segundos…`;
+  render();
+  countdownTimer = setInterval(() => {
+    secs--;
+    if (secs <= 0) {
+      clearInterval(countdownTimer);
+      el.innerHTML = 'Abriendo WhatsApp…';
+      goWhatsApp();
+    } else render();
+  }, 1000);
+}
+
+/* ═══════════ PARTÍCULAS (idéntico a tu landing) ═══════════ */
+(function(){
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor(){ this.reset(); }
+    reset(){
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.size = Math.random() * 1.5 + 0.3;
+      this.baseOpacity = Math.random() * 0.3 + 0.06;
+      this.opacity = this.baseOpacity;
+      this.vx = (Math.random() - 0.5) * 0.25;
+      this.vy = (Math.random() - 0.5) * 0.25;
+      this.sparkle = Math.random() * Math.PI * 2;
+      this.sparkleSpeed = Math.random() * 1.2 + 0.4;
+    }
+    update(){
+      this.x += this.vx; this.y += this.vy;
+      this.sparkle += this.sparkleSpeed * 0.016;
+      if(this.x < -10) this.x = W+10;
+      if(this.x > W+10) this.x = -10;
+      if(this.y < -10) this.y = H+10;
+      if(this.y > H+10) this.y = -10;
+      this.opacity = this.baseOpacity + Math.sin(this.sparkle) * 0.1;
+    }
+    draw(){
+      const isBlue = this.baseOpacity > 0.25;
+      ctx.fillStyle = isBlue ? `rgba(0,119,255,${this.opacity})` : `rgba(255,255,255,${this.opacity})`;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+      ctx.fill();
+    }
+  }
+
+  const COUNT = 140;
+  for(let i=0;i<COUNT;i++) particles.push(new Particle());
+
+  function connectParticles(){
+    const maxDist = 110;
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<maxDist){
+          ctx.strokeStyle=`rgba(0,119,255,${(1-d/maxDist)*0.05})`;
+          ctx.lineWidth=0.5;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{ p.update(); p.draw(); });
+    connectParticles();
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>
+</body>
+</html>
